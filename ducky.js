@@ -1,5 +1,7 @@
 window.onload = function () {
   const body = document.body;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
 
   console.log(body);
 
@@ -7,6 +9,16 @@ window.onload = function () {
   // ( 1. create the element
   //   2. add a class to the element
   //   3. append the element to the body )
+
+  let duck = document.createElement('div');
+  let flap = document.createElement('div');
+  let shot = document.createElement('div');
+  duck.className = 'duck';
+  flap.className = 'duck flap';
+  shot.className = 'duck shot';
+  body.appendChild(duck);
+  // body.appendChild(flap);
+  // body.appendChild(shot);
 
   // 2. Next, use setInterval to toggle the "flap" class on the duck every 250 ms (1/4 second)
   // https://www.w3schools.com/jsref/met_win_setinterval.asp
@@ -21,6 +33,34 @@ window.onload = function () {
 
   // 5. Congratulations! Move on to part 2!
 
+  let position = 100;
+  let Ypos = 160;
+  
+    setInterval(function(){
+
+      
+        duckMove(duck);   
+    }, 250);
+
+    function duckMove(duck){
+        duck.style.backgroundPosition = `-${position}px -${Ypos}px`;
+        let top = Math.random() * height;
+        let left = Math.random() * width;
+        //detects Angle of duck to determine Sprite.
+        let angle = Math.atan2(top, left);
+        console.log(angle);
+        
+            if(position === 100){ position = 430; }
+            else{ position = 100; }
+        
+        
+        //handles how Far the duck can go off screen
+        if(left > 0 && left < width - 110){ duck.style.left = `${left}px`;}
+        if(top > 0 && top < height/2){ duck.style.top = `${top}px`;}
+        
+    }
+
+    
   // ---------------------------- PART 2 ---------------------------------
 
   // 6. Now we will organize this better. Let's create
