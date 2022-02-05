@@ -7,9 +7,19 @@ window.onload = function () {
   // ( 1. create the element
   //   2. add a class to the element
   //   3. append the element to the body )
+    let div = document.createElement('div');
+    div.className = 'duck'
+    document.body.appendChild(div);
+    
 
   // 2. Next, use setInterval to toggle the "flap" class on the duck every 250 ms (1/4 second)
   // https://www.w3schools.com/jsref/met_win_setinterval.asp
+function flapAnim(){
+  
+  document.querySelector('.flap')
+}
+
+   setInterval(flapAnim,250) 
 
   // 3. Now, let's move the duck using CSS "top" and "left". Create
   // a function `moveDuck` that takes a duck object as an argument and sets the
@@ -17,7 +27,37 @@ window.onload = function () {
   // HINT: Use Math.random() * window.innerWidth    for "left"
   //       And Math.random() * window.innerHeight   for "top"
 
+function moveDuck(duck){
+  let elements = document.getElementsByClassName("duck"); 
+
+  for (let i = 0; i < elements.length; i++) {  // loop through each element 
+    elements[i].style.left = Math.floor(Math.random() * window.innerWidth)+'px'
+
+    elements[i].style.top = Math.floor(Math.random() * window.innerHeight)+'px'
+  }
+}  
+
+//THIS MIGH BE HELPFUL IN THE FUTURE
+//********************************** */
+// let timer;
+         
+// function startTimer() {
+//     timer = setInterval(function() {
+//         alert("5 seconds are up");
+//     }, 5000);
+// }
+ 
+// function stopTimer() {
+//     alert("Timer stopped");
+//     clearInterval(timer);
+
+//************************************** */
+
   // 4. Try making the duck move to a different location every second (what did we use to do this several lines up??)
+
+  setInterval(moveDuck,1000) 
+
+
 
   // 5. Congratulations! Move on to part 2!
 
@@ -27,13 +67,29 @@ window.onload = function () {
   //    a "function" called createDuck() that does everything in 1-4
   //    and "returns" the duck object
 
+  function createDuck(){
+    let div = document.createElement('div');
+    div.className = 'duck'
+    document.body.appendChild(div);
+
+  }
+
   // 7. Now, let's create lots of ducks!  Use a "for" loop to create 5 ducks
   //    using our fancy new createDuck() function
+
+  for(let i = 0; i < 4; i++){
+    createDuck()
+  }
 
   // 8. The ducks are overlapping.  Modify createDuck so each time
   //     it creates a duck, it appears in a random location
   // HINT: You may want to create a `randomPosition()` function that you can use
   //       to set the ducks' initial locations and in your `moveDuck()` function;
+
+  function randomPosition(){
+
+
+  }
 
   // 9. Keep going! Move onto part 3!
 
