@@ -8,20 +8,8 @@ window.onload = function () {
     //starting Angle when duck is generated
     let angleMarkerX = width/2;
     let angleMarkerY = height;
-    //duck speeds and directions
-    // let speedx = [-125, 125, -50, 50, -75, 75, -100, 100];
-    // let speedy = [-45, -20, -75, -10, -90, -80, -100, -150];
-    //random direction and speed selector
-    // let this.duckSpeedSelector = Math.floor(Math.random() * 8);
-    //Measure this.angle of duck compared to ground to determine sprite Animation.
-    // let this.angle;
-    //Starting location of duck on sprite sheet.
-    // let position = 100;
-    // let Ypos = 160;
- 
 
-
-  console.log(body);
+    console.log(body);
 
   // 1. Create a <div> with the class "duck" and add it to the body.  Do this step by step
   // ( 1. create the element
@@ -53,6 +41,7 @@ window.onload = function () {
     }
     //Ducks House
     const ducks = [];
+
     //Animate duck with setInterval
     setInterval(function(){
       for(let i = 0; i < ducks.length; i++){
@@ -60,6 +49,26 @@ window.onload = function () {
       }
     }, 160);
 
+    class Shot{
+      constructor(xpos, ypos){
+        this.xpos = xpos;
+        this.ypos = ypos;
+      }
+      shoot(){
+        document.addEventListener('click', function(e){
+          if(e.target.className === 'duck'){
+            this.shot = document.createElement('div');
+            this.shot.className = 'duck shot';
+            body.appendChild(this.shot);
+            
+            // this.shot.style.backgroundPosition = `center`;
+            this.shot.style.left = `${e.target.style.left}px`;
+            this.shot.style.top = `${e.target.style.top}px`;
+            console.log(e.target.style.left);
+          }
+        });
+      }
+    }
     class Duck{
       constructor(xpos, ypos, spritePositionX, spritePositionY){
         this.xpos = xpos;
@@ -102,31 +111,13 @@ window.onload = function () {
 
     //Generate Ducks
     for(let i = 0; i < 5; i++){
-      ducks.push(new Duck(randomPosition(100, width -200), height/2, 100, 160));
+      ducks.push(new Duck(randomPosition(100, width - 200), height/2, 100, 160));
       //Check for duplicate positions;
       ducks[i].createElement();
-      // for(let j = 1 + i; j < 5; j++){
-      //   console.log( ducks[i].style.left  )
-      // if(ducks[i].style.left + ducks[i].style.width > ducks[j].style.left){
-      //   console.log(ducks[i])
-      //   console.log('colliding');
-      //   }
-      // }
     }
 
-    //Make Sure ducks don't overlap
-    // for(let i = 0; i < ducks.length; i++){
-    //   console.log(ducks[i]);
-    //     for(let j = 1 + i; j < ducks.length; j++){
-    //       console.log(ducks[i])
-    //       if(ducks[i].style.left === ducks[j].style.left){
-    //         console.log(ducks[j])
-    //         ducks[j].style.left = `${randomPosition(100, width - 200)}px`;
-    //         // ducks[i].createElement();
-    //       }
-    //     }
-    //   }
-    // console.log(  ducks   )
+    const shot = new Shot();
+    shot.shoot()
     
 
 
