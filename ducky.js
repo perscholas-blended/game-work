@@ -4,23 +4,20 @@ window.onload = function () {
     let height = window.innerHeight;
     //Dock object
     let duckPositionX = Math.random() * width - 100;
-    let duckPositionY = height/2;
+    let duckPositionY = height * .75;
     //starting Angle when duck is generated
     let angleMarkerX = width/2;
     let angleMarkerY = height;
-
     //duck speeds and directions
-    let speedx = [-125, 125, -50, 50, -75, 75, -100, 100];
-    let speedy = [-45, -20, -75, -10, -90, -80, -100, -150];
-
+    // let speedx = [-125, 125, -50, 50, -75, 75, -100, 100];
+    // let speedy = [-45, -20, -75, -10, -90, -80, -100, -150];
     //random direction and speed selector
-    let duckSpeed = Math.floor(Math.random() * 8);
-    //Measure angle of duck compared to ground to determine sprite Animation.
-    let angle;
-
+    // let this.duckSpeedSelector = Math.floor(Math.random() * 8);
+    //Measure this.angle of duck compared to ground to determine sprite Animation.
+    // let this.angle;
     //Starting location of duck on sprite sheet.
-    let position = 100;
-    let Ypos = 160;
+    // let position = 100;
+    // let Ypos = 160;
  
 
 
@@ -31,12 +28,10 @@ window.onload = function () {
   //   2. add a class to the element
   //   3. append the element to the body )
 
-  let duck = document.createElement('div');
-  let flap = document.createElement('div');
-  let shot = document.createElement('div');
+  // let duck = document.createElement('div');
   
-  duck.className = 'duck';
-  body.appendChild(duck);
+  // duck.className = 'duck';
+  // body.appendChild(duck);
 
 
   // 2. Next, use setInterval to toggle the "flap" class on the duck every 250 ms (1/4 second)
@@ -52,51 +47,68 @@ window.onload = function () {
 
   // 5. Congratulations! Move on to part 2!
 
- 
-  
-    setInterval(function(){
-        duckDraw();
-        duckMove(); 
-    }, 120);
-
-    function duckMove(){
-        //detects Angle of duck to determine Sprite.
-        angle = Math.atan2(angleMarkerY - duckPositionY, angleMarkerX - duckPositionX);
-      
-        if(angle <= .78  && angle > 0){ if(position === 550){ position = 962;} else{ position = 550;}} 
-        if(angle > .78 && angle <= 1.56){ if(position === 100){ position = 430;} else{ position = 100;}} 
-        if(angle > 1.56 && angle <= 2.34){ if(position === 200){ position = 300;} else{ position = 200;}} 
-        if(angle > 2.34 && angle <= 3.14){ if(position === 680){ position = 830;} else{ position = 680}}    
-        //Add to position with each frame 
-        duckPositionY += speedy[duckSpeed];
-        duckPositionX -= speedx[duckSpeed];            
-    }
-
-    function duckDraw(){
-        //Location on spritesheet
-        duck.style.backgroundPosition = `-${position}px -${Ypos}px`;   
-        //Handle duck position
-        duck.style.top = `${duckPositionY}px`;
-        duck.style.left = `${duckPositionX}px`; 
-    }
-
-    function createDuck(){
-      for(let i = 0; i < 5; i++){
-        let div = document.createElement('div');
-        div.className = 'duck';
-        body.appendChild(div);
-        div.style.backgroundPosition = `${position}px ${Ypos}px`;
-        div.style.top = `${randomPosition(0,height * 75)}px`;
-        console.log(duck);
-
-      }
-    }
-
+    //random range generator
     function randomPosition(min, max){
       return Math.floor(Math.random() * (max - min + 1) + min);
     }
+    //Ducks House
+    const ducks = [];
+    //Animate duck with setInterval
+    setInterval(function(){
+      for(let i = 0; i < ducks.length; i++){
+        ducks[i].update();
+      }
+    }, 160);
 
-    createDuck();
+    class Duck{
+      constructor(xpos, ypos, spritePositionX, spritePositionY){
+        this.xpos = xpos;
+        this.ypos = ypos;
+        this.spritePositionX = spritePositionX;
+        this.spritePositionY = spritePositionY;
+        this.speedx = [-125, 125, -50, 50, -75, 75, -100, 100];
+        this.speedy = [-45, -20, -75, -10, -90, -80, -100, -150];
+        this.duckSpeedSelector = Math.floor(Math.random() * 8);
+      }
+      createElement(){
+        this.duck = document.createElement('div');
+        this.duck.className = 'duck';
+        body.appendChild(this.duck);
+      }
+      duckMove(){
+        //detects Angle of duck to determine Sprite.
+        this.angle = Math.atan2(angleMarkerY - this.ypos, angleMarkerX - this.xpos);
+        //detect the angle at take off in respect to the angleMarker position at bottom center
+        if(this.angle <= .78  && this.angle > 0){ if(this.spritePositionX === 550){ this.spritePositionX = 962;} else{ this.spritePositionX = 550;}} 
+        if(this.angle > .78 && this.angle <= 1.56){ if(this.spritePositionX === 100){ this.spritePositionX = 430;} else{ this.spritePositionX = 100;}} 
+        if(this.angle > 1.56 && this.angle <= 2.34){ if(this.spritePositionX === 200){ this.spritePositionX = 300;} else{ this.spritePositionX = 200;}} 
+        if(this.angle > 2.34 && this.angle <= 3.14){ if(this.spritePositionX === 680){ this.spritePositionX = 830;} else{ this.spritePositionX = 680}}    
+        //Add to position with each frame 
+        this.xpos += this.speedx[this.duckSpeedSelector];
+        this.ypos += this.speedy[this.duckSpeedSelector];   
+        }
+      duckDraw(){
+        //Location on spritesheet
+        this.duck.style.backgroundPosition = `-${this.spritePositionX}px -${this.spritePositionY}px`;   
+        // Handle duck position
+        this.duck.style.top = `${this.ypos}px`;
+        this.duck.style.left = `${this.xpos}px`; 
+         }
+      update(){
+        this.duckDraw();
+        this.duckMove();
+        }
+    }
+    //Generate Ducks
+    for(let i = 0; i < 3; i++){
+      ducks.push(new Duck(randomPosition(100, width -200), height/2, 100, 160));
+      //Check for duplicate positions;
+      ducks[i].createElement();
+    }
+    console.log(  ducks   )
+
+
+
 
 
     
