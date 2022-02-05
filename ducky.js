@@ -2,6 +2,27 @@ window.onload = function () {
   const body = document.body;
     let width = window.innerWidth;
     let height = window.innerHeight;
+    //Dock object
+    let duckPositionX = Math.random() * width - 100;
+    let duckPositionY = height/2;
+    //starting Angle when duck is generated
+    let angleMarkerX = width/2;
+    let angleMarkerY = height;
+
+    //duck speeds and directions
+    let speedx = [-125, 125, -50, 50, -75, 75, -100, 100];
+    let speedy = [-45, -20, -75, -10, -90, -80, -100, -150];
+
+    //random direction and speed selector
+    let duckSpeed = Math.floor(Math.random() * 8);
+    //Measure angle of duck compared to ground to determine sprite Animation.
+    let angle;
+
+    //Starting location of duck on sprite sheet.
+    let position = 100;
+    let Ypos = 160;
+ 
+
 
   console.log(body);
 
@@ -13,52 +34,70 @@ window.onload = function () {
   let duck = document.createElement('div');
   let flap = document.createElement('div');
   let shot = document.createElement('div');
+  
   duck.className = 'duck';
-  flap.className = 'duck flap';
-  shot.className = 'duck shot';
   body.appendChild(duck);
-  // body.appendChild(flap);
-  // body.appendChild(shot);
+
 
   // 2. Next, use setInterval to toggle the "flap" class on the duck every 250 ms (1/4 second)
   // https://www.w3schools.com/jsref/met_win_setinterval.asp
 
-  // 3. Now, let's move the duck using CSS "top" and "left". Create
+  // 3. Now, let's move the duck using CSS "duckPositionX" and "duckPositionY". Create
   // a function `moveDuck` that takes a duck object as an argument and sets the
-  // "top" and "left" CSS properties.
-  // HINT: Use Math.random() * window.innerWidth    for "left"
-  //       And Math.random() * window.innerHeight   for "top"
+  // "duckPositionX" and "duckPositionY" CSS properties.
+  // HINT: Use Math.random() * window.innerWidth    for "duckPositionY"
+  //       And Math.random() * window.innerHeight   for "duckPositionX"
 
   // 4. Try making the duck move to a different location every second (what did we use to do this several lines up??)
 
   // 5. Congratulations! Move on to part 2!
 
-  let position = 100;
-  let Ypos = 160;
+ 
   
     setInterval(function(){
+        duckDraw();
+        duckMove(); 
+    }, 120);
 
-      
-        duckMove(duck);   
-    }, 250);
-
-    function duckMove(duck){
-        duck.style.backgroundPosition = `-${position}px -${Ypos}px`;
-        let top = Math.random() * height;
-        let left = Math.random() * width;
+    function duckMove(){
         //detects Angle of duck to determine Sprite.
-        let angle = Math.atan2(top, left);
-        console.log(angle);
-        
-            if(position === 100){ position = 430; }
-            else{ position = 100; }
-        
-        
-        //handles how Far the duck can go off screen
-        if(left > 0 && left < width - 110){ duck.style.left = `${left}px`;}
-        if(top > 0 && top < height/2){ duck.style.top = `${top}px`;}
-        
+        angle = Math.atan2(angleMarkerY - duckPositionY, angleMarkerX - duckPositionX);
+      
+        if(angle <= .78  && angle > 0){ if(position === 550){ position = 962;} else{ position = 550;}} 
+        if(angle > .78 && angle <= 1.56){ if(position === 100){ position = 430;} else{ position = 100;}} 
+        if(angle > 1.56 && angle <= 2.34){ if(position === 200){ position = 300;} else{ position = 200;}} 
+        if(angle > 2.34 && angle <= 3.14){ if(position === 680){ position = 830;} else{ position = 680}}    
+        //Add to position with each frame 
+        duckPositionY += speedy[duckSpeed];
+        duckPositionX -= speedx[duckSpeed];            
     }
+
+    function duckDraw(){
+        //Location on spritesheet
+        duck.style.backgroundPosition = `-${position}px -${Ypos}px`;   
+        //Handle duck position
+        duck.style.top = `${duckPositionY}px`;
+        duck.style.left = `${duckPositionX}px`; 
+    }
+
+    function createDuck(){
+      for(let i = 0; i < 5; i++){
+        let div = document.createElement('div');
+        div.className = 'duck';
+        body.appendChild(div);
+        div.style.backgroundPosition = `${position}px ${Ypos}px`;
+        div.style.top = `${randomPosition(0,height * 75)}px`;
+        console.log(duck);
+
+      }
+    }
+
+    function randomPosition(min, max){
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    createDuck();
+
 
     
   // ---------------------------- PART 2 ---------------------------------
@@ -87,12 +126,12 @@ window.onload = function () {
   //     as for removing the element check out https://dzone.com/articles/removing-element-plain
 
   // 13. Create a new function named checkForWinner() that reads the DOM
-  //     to see if there are any ducks left. (How can we check the DOM for more than one element?, and how can we see how many elements we get back) If not, alert "YOU WIN!"
+  //     to see if there are any ducks duckPositionY. (How can we check the DOM for more than one element?, and how can we see how many elements we get back) If not, alert "YOU WIN!"
 
   // 14. BONUS: The ducks are moving pretty erratically, can you think
   //     of a way to adjust the ducks speed based on how far needs to move?
 
-  // 15. BONUS: Add the "left" and "right" class to the duck based on the
+  // 15. BONUS: Add the "duckPositionY" and "right" class to the duck based on the
   //     direction the duck is flying and change the way the duck is facing
 
   // Done, you have accomplish another level of skill
