@@ -99,13 +99,35 @@ window.onload = function () {
         this.duckMove();
         }
     }
+
     //Generate Ducks
-    for(let i = 0; i < 3; i++){
+    for(let i = 0; i < 5; i++){
       ducks.push(new Duck(randomPosition(100, width -200), height/2, 100, 160));
       //Check for duplicate positions;
       ducks[i].createElement();
+      // for(let j = 1 + i; j < 5; j++){
+      //   console.log( ducks[i].style.left  )
+      // if(ducks[i].style.left + ducks[i].style.width > ducks[j].style.left){
+      //   console.log(ducks[i])
+      //   console.log('colliding');
+      //   }
+      // }
     }
-    console.log(  ducks   )
+
+    //Make Sure ducks don't overlap
+    // for(let i = 0; i < ducks.length; i++){
+    //   console.log(ducks[i]);
+    //     for(let j = 1 + i; j < ducks.length; j++){
+    //       console.log(ducks[i])
+    //       if(ducks[i].style.left === ducks[j].style.left){
+    //         console.log(ducks[j])
+    //         ducks[j].style.left = `${randomPosition(100, width - 200)}px`;
+    //         // ducks[i].createElement();
+    //       }
+    //     }
+    //   }
+    // console.log(  ducks   )
+    
 
 
 
