@@ -3,12 +3,16 @@ window.onload = function () {
   let width = window.innerWidth;
   let height = window.innerHeight;
   //Dock object
-  let duckPositionX = randomPosition(50, width - 50);
+  let duckPositionX = width/2;
   let duckPositionY = height * .65;
   //starting Angle when duck is generated
-  let angleMarkerX = width/2;
+  let angleMarkerX = randomPosition(50, width - 100);
   let angleMarkerY = height;
   let score = document.getElementsByClassName('duck');
+  const intro = new sound("audio/start-round.mp3");
+  const bang = new sound('audio/bang.wav');
+  const bang2 = new sound('audio/bang.wav');
+
 
     console.log(body);
 
@@ -43,16 +47,14 @@ window.onload = function () {
     //Ducks House
     const ducks = [];  
   
-
-    //Animate duck with setInterval
+    //Update game loop
     setInterval(function(){
       for(let i = 0; i < ducks.length; i++){
         ducks[i].update();
         checkForWinner();
-
         scoreBoard.textContent = 'count: ' + score.length;
       }
-    }, 160);
+    }, 250);
 
     class Shot{
       constructor(xpos, ypos){
@@ -68,8 +70,8 @@ window.onload = function () {
         body.appendChild(this.shot);
         this.shot.style.left = `${event.clientX - 40}px`;
         this.shot.style.top = `${event.clientY - 40}px`;
-        let remove = this.shot
-
+        bang.play('audio/bang.wav')
+        let remove = this.shot;
         setTimeout(function(){
           remove.parentNode.removeChild(remove);
            },200);
@@ -131,21 +133,16 @@ window.onload = function () {
         }
     }
 
-    function Music(){
-        let audio = new Audio(audio/start-round.mp3);
-        audio.play();
-    }
-
     //Wait 2 seconds to start game
     function startGame(){
-      // Music();
+      intro.play();
       setTimeout(function(){
       for(let i = 0; i < 3; i++){
         ducks.push(new Duck(randomPosition(60, width -60), duckPositionY, 100, 160));
         //Check for duplicate positions;
         ducks[i].createElement();
         }
-      }, 2000);
+      }, 5000);
     }
 
     function checkForWinner(){
@@ -189,9 +186,22 @@ window.onload = function () {
     scoreBoard.style.position = 'absolute';
     scoreBoard.style.left = `${width - 170}px`
     scoreBoard.style.top = `${height * .01}px`
-    // scoreBoard.textContent = score.length;
 
-    //Create a shot obect
+    //Sound Constructor
+    function sound(src) {
+      this.sound = document.createElement("audio");
+      this.sound.src = src;
+      this.sound.setAttribute("preload", "auto");
+      this.sound.setAttribute("controls", "none");
+      this.sound.style.display = "none";
+      document.body.appendChild(this.sound);
+      this.play = function(){
+          this.sound.play();
+      }
+      this.stop = function(){
+          this.sound.pause();
+      }    
+  }
     startGame();
     const shot = new Shot();
     shot.shoot()
