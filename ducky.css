@@ -26,6 +26,7 @@ html {
   transition: top 2s, left 2s;
   transition-timing-function: linear;
   background-repeat: no-repeat;
+
 }
 
 .duck.right {
