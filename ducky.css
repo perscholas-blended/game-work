@@ -27,7 +27,10 @@ html {
   transition-timing-function: linear;
   background-repeat: no-repeat;
 }
-
+/* change duck facing direction for even even number of duck */
+.duck:nth-child(even) {
+  transform: rotateY(3.142rad);
+}
 .duck.right {
   background-position: -200px -160px;
 }
@@ -43,4 +46,20 @@ html {
 .duck.shot {
   background-position: center;
   background-image: url(images/shot.png);
+}
+/* style alert box */
+.youwin {
+  position: absolute;
+  left: 45%;
+  text-align: center;
+  bottom: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  margin: auto;
+  border-radius: 1rem;
+  border-color: black;
+  border-style: solid;
+  background-color: rgb(139, 141, 238);
+  transform: rotate(360dge);
+  border-width: conten;
 }
