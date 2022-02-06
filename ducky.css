@@ -40,7 +40,10 @@ html {
 .duck.flap {
   background-position: -430px -160px;
 }
-.duck.shot {
+.shot {
+  position: absolute;
   background-position: center;
+  width: 110px;
+  height: 115px;
   background-image: url(images/shot.png);
 }

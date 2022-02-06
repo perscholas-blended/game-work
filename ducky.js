@@ -1,15 +1,14 @@
 window.onload = function () {
   const body = document.body;
-  let DuckCount = document.getElementsByClassName('duck');
-
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    //Dock object
-    let duckPositionX = Math.random() * width - 100;
-    let duckPositionY = height * .75;
-    //starting Angle when duck is generated
-    let angleMarkerX = width/2;
-    let angleMarkerY = height;
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  //Dock object
+  let duckPositionX = randomPosition(50, width - 50);
+  let duckPositionY = height * .65;
+  //starting Angle when duck is generated
+  let angleMarkerX = width/2;
+  let angleMarkerY = height;
+  let score = document.getElementsByClassName('duck');
 
     console.log(body);
 
@@ -42,17 +41,16 @@ window.onload = function () {
       return Math.floor(Math.random() * (max - min + 1) + min);
     }
     //Ducks House
-    const ducks = [];
-
-    // document.getElementsByClassName('duck').addEventListener('click', Duck.clickedDuck.bind(Duck));
-    
+    const ducks = [];  
+  
 
     //Animate duck with setInterval
-
     setInterval(function(){
       for(let i = 0; i < ducks.length; i++){
         ducks[i].update();
-        ducks[i].removeDuck()
+        checkForWinner();
+
+        scoreBoard.textContent = 'count: ' + score.length;
       }
     }, 160);
 
@@ -66,18 +64,16 @@ window.onload = function () {
       }
       showShot(event) {
         this.shot = document.createElement('div');
-        this.shot.className = 'duck shot';
+        this.shot.className = 'shot';
         body.appendChild(this.shot);
         this.shot.style.left = `${event.clientX - 40}px`;
         this.shot.style.top = `${event.clientY - 40}px`;
         let remove = this.shot
 
         setTimeout(function(){
-          // this.shot.style.transition = 'top 2s';
           remove.parentNode.removeChild(remove);
-           },150);
+           },200);
       }   
-   
     }
     class Duck{
       constructor(xpos, ypos, spritePositionX, spritePositionY){
@@ -95,13 +91,18 @@ window.onload = function () {
         body.appendChild(this.duck);
       }
       removeDuck(){
-        document.addEventListener('click', function(e){
+            document.addEventListener('click', function(e){
           if(e.target.className === 'duck'){
             setTimeout(function(){
               body.removeChild(e.target);
             }, 100);
           }
         });
+      }
+      duckOutOfView(){
+        if(this.duck.style.left + this.xpos > width||this.duck.style.left + this.xpos - 200 < 0||this.duck.style.top + this.ypos + 200 < 0){
+          console.log('duck off screen')
+        }    
       }
       duckMove(){
         //detects Angle of duck to determine Sprite.
@@ -115,9 +116,6 @@ window.onload = function () {
               this.xpos += this.speedx[this.duckSpeedSelector];
               this.ypos += this.speedy[this.duckSpeedSelector]; 
           }
-      clickedDuck(){
-        console.log('duck clicked');
-      }
       duckDraw(){
         //Location on spritesheet
         this.duck.style.backgroundPosition = `-${this.spritePositionX}px -${this.spritePositionY}px`;   
@@ -128,27 +126,76 @@ window.onload = function () {
       update(){
         this.duckDraw();
         this.duckMove();
+        this.removeDuck();
+        this.duckOutOfView();
         }
     }
 
-    //Generate Ducks
-    for(let i = 0; i < 4; i++){
-      ducks.push(new Duck(randomPosition(100, width - 200), height/2, 100, 160));
-      //Check for duplicate positions;
-      ducks[i].createElement();
+    function Music(){
+        let audio = new Audio(audio/start-round.mp3);
+        audio.play();
     }
 
+    //Wait 2 seconds to start game
+    function startGame(){
+      // Music();
+      setTimeout(function(){
+      for(let i = 0; i < 3; i++){
+        ducks.push(new Duck(randomPosition(60, width -60), duckPositionY, 100, 160));
+        //Check for duplicate positions;
+        ducks[i].createElement();
+        }
+      }, 2000);
+    }
+
+    function checkForWinner(){
+      if(score.length <= 0){
+        console.log(score.length)
+        let winner = document.createElement('div');
+        body.appendChild(winner);
+        winner.style.className = 'winner';
+        winner.style.width = `${width/2}px`;
+        winner.style.height = `${height/2}px`;
+        // winner.style.border = '3px solid';
+        // winner.style.backgroundColor = 'green';
+        winner.style.textAlign = 'center';
+        winner.style.margin = '0px';
+        winner.style.borderRadius ='5px';
+        winner.style.fontSize = `${width * .05}px`;
+        winner.style.position = 'absolute';
+        winner.style.left = `${width * .28}px`
+        winner.style.top = `${height * .40}px`
+        winner.textContent = 'YOU WIN!!';
+      
+        const clearDucks = document.querySelectorAll('duck');
+        clearDucks.forEach(function(clearDucks){
+          clearDucks.remove();
+        })
+        return true;
+      }
+    }
+    
+    //Lets keep score
+    let scoreBoard = document.createElement('div');
+    body.appendChild(scoreBoard);
+    scoreBoard.style.className = 'score';
+    scoreBoard.style.width = '150px';
+    scoreBoard.style.height ='50px';
+    scoreBoard.style.border = '3px solid';
+    scoreBoard.style.textAlign = 'center';
+    scoreBoard.style.margin = '5px';
+    scoreBoard.style.borderRadius ='5px';
+    scoreBoard.style.fontSize = '30px'
+    scoreBoard.style.position = 'absolute';
+    scoreBoard.style.left = `${width - 170}px`
+    scoreBoard.style.top = `${height * .01}px`
+    // scoreBoard.textContent = score.length;
+
+    //Create a shot obect
+    startGame();
     const shot = new Shot();
     shot.shoot()
 
-   
-    
-
-
-
-
-
-    
   // ---------------------------- PART 2 ---------------------------------
 
   // 6. Now we will organize this better. Let's create
