@@ -39,36 +39,44 @@ function createDuck(){
   duck.addEventListener("click",changeClass);
 
   //2,4
+  const half_W = innerWidth/2;
   const interval = setInterval(toggle,250);
   
   function toggle(){
+
     duck.classList.toggle("flap");
     moveDuck(duck);
   }
 
-  const randomPosition = (duck) => {
+  const randomPosition = () => {
     duck.style.left= "1000px";
     duck.style.top= "1000px";
   }
 
-  //3
-  function moveDuck(duck) {
+
+  let duck_position = duck.style.left;
+  //3,15
+  function moveDuck() {
     randomPosition(duck);
     duck.style.left = Math.random() * window.innerWidth + "px";
     duck.style.top = Math.random() * window.innerHeight+ "px";
   }
-  //11
+
+  //11,12 
   function changeClass(){
     duck.classList.add("shot");
     const remove = () => {
    document.querySelector(".duck.shot").remove();
      }; 
-   const delay = setTimeout(remove,100);
-       
+   const delay = setTimeout(remove,100);       
  }
-
-
-
+ //14
+ function speed(){
+    duck.style.transitionTimingFunction = `cubic-bezier(${Math.random()*1},${Math.random()*1},${Math.random()*1},${Math.random()*1})`;
+ }
+  speed();
+  
+  //6
   return duck;
 }
 
@@ -106,7 +114,7 @@ function createDuck(){
   // }
 
   // This code is not working cuz of the scope. Outside of the code will execute first no matter what 
-  // so, my brower can't read ducks cuz there s no duck before the createduck(). Hoist and scope is key thing. 
+  // so, my brower can't read ducks cuz there s no duck before the createduck(). Hoist and scope are key things to make any error. 
 
   // 12. After a duck has been clicked on, remove it from the DOM after
   //     a short delay (1 second) Hint Hint...use setTimeout
@@ -130,7 +138,6 @@ function createDuck(){
     }
   }
  
-
   // 14. BONUS: The ducks are moving pretty erratically, can you think
   //     of a way to adjust the ducks speed based on how far needs to move?
 
