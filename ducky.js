@@ -30,13 +30,16 @@ window.onload = function () {
 
 function createDuck(){
 
+
   //1
   const duck = document.createElement('div');
   duck.className = "duck";
   document.querySelector("body").appendChild(duck);
 
+  duck.addEventListener("click",changeClass);
+
   //2,4
-  const interval = setInterval(toggle,1050);
+  const interval = setInterval(toggle,250);
   
   function toggle(){
     duck.classList.toggle("flap");
@@ -54,16 +57,29 @@ function createDuck(){
     duck.style.left = Math.random() * window.innerWidth + "px";
     duck.style.top = Math.random() * window.innerHeight+ "px";
   }
+  //11
+  function changeClass(){
+    duck.classList.add("shot");
+    const remove = () => {
+   document.querySelector(".duck.shot").remove();
+     }; 
+   const delay = setTimeout(remove,100);
+       
+ }
+
+
+
   return duck;
 }
 
   // 7. Now, let's create lots of ducks!  Use a "for" loop to create 5 ducks
   //    using our fancy new createDuck() function
 
-  for(let i  = 0; i < 6;i++){
+  for(let i  = 0; i < 5;i++){
     createDuck();
   }
-
+ 
+  
   // 8. The ducks are overlapping.  Modify createDuck so each time
   //     it creates a duck, it appears in a random location
   // HINT: You may want to create a `randomPosition()` function that you can use
@@ -76,16 +92,22 @@ function createDuck(){
   // 11. BOOM. Attach a "click" handler that adds the "shot" class to
   //     the duck when you click on it!
 
-  function changeClass(){
-    document.querySelector(".duck").classList.add("shot");
-    const remove = () => {
-    document.querySelector(".duck.shot").remove();
-      }; 
-    const delay = setTimeout(remove,100);    
-  }
+  // const duck_b = document.querySelectorAll(".duck");
+  // console.log(duck_b);
+  // function changeClass(duck){
+  //   duck.classList.add("shot");
+  //   const remove = () => {
+  //   document.querySelector(".duck.shot").remove();
+  //     }; 
+  //   const delay = setTimeout(remove,100);    
+  // }
+  // for(let j =0; j<duck_b.length; j++){
+  //   duck_b[j].addEventListener("click",changeClass(duck_b[j]));
+  // }
 
-  document.querySelector(".duck").addEventListener("click",changeClass);
-  
+  // This code is not working cuz of the scope. Outside of the code will execute first no matter what 
+  // so, my brower can't read ducks cuz there s no duck before the createduck(). Hoist and scope is key thing. 
+
   // 12. After a duck has been clicked on, remove it from the DOM after
   //     a short delay (1 second) Hint Hint...use setTimeout
   //     as for removing the element check out https://dzone.com/articles/removing-element-plain
@@ -93,6 +115,21 @@ function createDuck(){
 
   // 13. Create a new function named checkForWinner() that reads the DOM
   //     to see if there are any ducks left. (How can we check the DOM for more than one element?, and how can we see how many elements we get back) If not, alert "YOU WIN!"
+
+  const timer = setTimeout(checkForWinner,8000);
+
+  function checkForWinner() {
+    const left_duck = document.querySelectorAll(".duck");    
+    if(left_duck.length == 0){
+     alert("You Win!");
+     location.reload();
+    }
+    else{
+      alert(`${left_duck.length} ducks left, you should try harder!`);
+      location.reload();
+    }
+  }
+ 
 
   // 14. BONUS: The ducks are moving pretty erratically, can you think
   //     of a way to adjust the ducks speed based on how far needs to move?
