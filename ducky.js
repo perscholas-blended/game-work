@@ -42,10 +42,14 @@ window.onload = function () {
     //Ducks House
     const ducks = [];
 
+    // document.getElementsByClassName('duck').addEventListener('click', Duck.clickedDuck.bind(Duck));
+
+
     //Animate duck with setInterval
     setInterval(function(){
       for(let i = 0; i < ducks.length; i++){
         ducks[i].update();
+        ducks[i].removeDuck()
       }
     }, 160);
 
@@ -59,12 +63,13 @@ window.onload = function () {
           if(e.target.className === 'duck'){
             this.shot = document.createElement('div');
             this.shot.className = 'duck shot';
-            body.appendChild(this.shot);
-            
-            // this.shot.style.backgroundPosition = `center`;
+            this.shot.style.backgroundPosition = `center`;
+            // this.shot.style.position = 'absolute';
             this.shot.style.left = `${e.target.style.left}px`;
             this.shot.style.top = `${e.target.style.top}px`;
-            console.log(e.target.style.left);
+            // body.appendChild(this.shot);
+
+            // console.log(e.target.style.left);
           }
         });
       }
@@ -84,6 +89,15 @@ window.onload = function () {
         this.duck.className = 'duck';
         body.appendChild(this.duck);
       }
+      removeDuck(){
+        document.addEventListener('click', function(e){
+          if(e.target.className === 'duck'){
+            setTimeout(function(){
+              body.removeChild(e.target);
+            }, 200);
+          }
+        });
+      }
       duckMove(){
         //detects Angle of duck to determine Sprite.
         this.angle = Math.atan2(angleMarkerY - this.ypos, angleMarkerX - this.xpos);
@@ -93,9 +107,12 @@ window.onload = function () {
         if(this.angle > 1.56 && this.angle <= 2.34){ if(this.spritePositionX === 200){ this.spritePositionX = 300;} else{ this.spritePositionX = 200;}} 
         if(this.angle > 2.34 && this.angle <= 3.14){ if(this.spritePositionX === 680){ this.spritePositionX = 830;} else{ this.spritePositionX = 680}}    
         //Add to position with each frame 
-        this.xpos += this.speedx[this.duckSpeedSelector];
-        this.ypos += this.speedy[this.duckSpeedSelector];   
-        }
+              this.xpos += this.speedx[this.duckSpeedSelector];
+              this.ypos += this.speedy[this.duckSpeedSelector]; 
+          }
+      clickedDuck(){
+        console.log('duck clicked');
+      }
       duckDraw(){
         //Location on spritesheet
         this.duck.style.backgroundPosition = `-${this.spritePositionX}px -${this.spritePositionY}px`;   
