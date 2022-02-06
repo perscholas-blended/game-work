@@ -47,3 +47,14 @@ html {
   height: 115px;
   background-image: url(images/shot.png);
 }
+.dog {
+  position: absolute;
+  background-position: -20px -0px;
+  width: 173px;
+  height: 160px;
+  background-image: url(images/duckhunt.png);
+  transition: top 2s, left 2s;
+  transition-timing-function: linear;
+  background-repeat: no-repeat;
+ 
+}
