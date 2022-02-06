@@ -1,5 +1,7 @@
 window.onload = function () {
   const body = document.body;
+  let DuckCount = document.getElementsByClassName('duck');
+
     let width = window.innerWidth;
     let height = window.innerHeight;
     //Dock object
@@ -43,9 +45,10 @@ window.onload = function () {
     const ducks = [];
 
     // document.getElementsByClassName('duck').addEventListener('click', Duck.clickedDuck.bind(Duck));
-
+    
 
     //Animate duck with setInterval
+
     setInterval(function(){
       for(let i = 0; i < ducks.length; i++){
         ducks[i].update();
@@ -59,20 +62,22 @@ window.onload = function () {
         this.ypos = ypos;
       }
       shoot(){
-        document.addEventListener('click', function(e){
-          if(e.target.className === 'duck'){
-            this.shot = document.createElement('div');
-            this.shot.className = 'duck shot';
-            this.shot.style.backgroundPosition = `center`;
-            // this.shot.style.position = 'absolute';
-            this.shot.style.left = `${e.target.style.left}px`;
-            this.shot.style.top = `${e.target.style.top}px`;
-            // body.appendChild(this.shot);
-
-            // console.log(e.target.style.left);
-          }
-        });
+        document.addEventListener('click', this.showShot);        
       }
+      showShot(event) {
+        this.shot = document.createElement('div');
+        this.shot.className = 'duck shot';
+        body.appendChild(this.shot);
+        this.shot.style.left = `${event.clientX - 40}px`;
+        this.shot.style.top = `${event.clientY - 40}px`;
+        let remove = this.shot
+
+        setTimeout(function(){
+          // this.shot.style.transition = 'top 2s';
+          remove.parentNode.removeChild(remove);
+           },150);
+      }   
+   
     }
     class Duck{
       constructor(xpos, ypos, spritePositionX, spritePositionY){
@@ -94,7 +99,7 @@ window.onload = function () {
           if(e.target.className === 'duck'){
             setTimeout(function(){
               body.removeChild(e.target);
-            }, 200);
+            }, 100);
           }
         });
       }
@@ -127,7 +132,7 @@ window.onload = function () {
     }
 
     //Generate Ducks
-    for(let i = 0; i < 5; i++){
+    for(let i = 0; i < 4; i++){
       ducks.push(new Duck(randomPosition(100, width - 200), height/2, 100, 160));
       //Check for duplicate positions;
       ducks[i].createElement();
@@ -135,6 +140,8 @@ window.onload = function () {
 
     const shot = new Shot();
     shot.shoot()
+
+   
     
 
 
