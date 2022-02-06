@@ -15,11 +15,10 @@ window.onload = function () {
   // 2. Next, use setInterval to toggle the "flap" class on the duck every 250 ms (1/4 second)
   // https://www.w3schools.com/jsref/met_win_setinterval.asp
 function flapAnim(){
-  
-  document.querySelector('.flap')
+  let flap = div.classList.toggle('.flap')  ///AHHHHH!!! IT's NOT WORKING!!!!!!!
 }
 
-   setInterval(flapAnim,250) 
+   setInterval(flapAnim,230) 
 
   // 3. Now, let's move the duck using CSS "top" and "left". Create
   // a function `moveDuck` that takes a duck object as an argument and sets the
@@ -28,19 +27,17 @@ function flapAnim(){
   //       And Math.random() * window.innerHeight   for "top"
 
 function moveDuck(duck){
-  let elements = document.getElementsByClassName("duck"); 
+  let elements = document.getElementsByClassName("duck"); // I had no idea that this was treated as an array
 
   for (let i = 0; i < elements.length; i++) {  // loop through each element 
     elements[i].style.left = Math.floor(Math.random() * window.innerWidth)+'px'
-
     elements[i].style.top = Math.floor(Math.random() * window.innerHeight)+'px'
   }
 }  
 
-//THIS MIGH BE HELPFUL IN THE FUTURE
+//RANDOM SNIPPET RELATED TO setInterval THAT MIGHT BE HELPFUL IN THE FUTURE
 //********************************** */
 // let timer;
-         
 // function startTimer() {
 //     timer = setInterval(function() {
 //         alert("5 seconds are up");
@@ -55,8 +52,7 @@ function moveDuck(duck){
 
   // 4. Try making the duck move to a different location every second (what did we use to do this several lines up??)
 
-  setInterval(moveDuck,1000) 
-
+  setInterval(moveDuck,1500) // Is this the answer??? I mean it is working so it must be the answer.
 
 
   // 5. Congratulations! Move on to part 2!
@@ -70,40 +66,65 @@ function moveDuck(duck){
   function createDuck(){
     let div = document.createElement('div');
     div.className = 'duck'
-    document.body.appendChild(div);
-
+    document.body.appendChild(div);   // It's working.
+    function flapAnim(){
+      let flap = div.classList.toggle('.flap')
+    }
+       setInterval(flapAnim,220);    
   }
-
+    for(let i = 0; i < 4; i++){
+        createDuck()
+    }
   // 7. Now, let's create lots of ducks!  Use a "for" loop to create 5 ducks
   //    using our fancy new createDuck() function
 
-  for(let i = 0; i < 4; i++){
-    createDuck()
-  }
 
   // 8. The ducks are overlapping.  Modify createDuck so each time
   //     it creates a duck, it appears in a random location
   // HINT: You may want to create a `randomPosition()` function that you can use
   //       to set the ducks' initial locations and in your `moveDuck()` function;
 
-  function randomPosition(){
+  // function randomPosition(){
+  
+  // } ARE'NT THEY ALREADY IN RANDOM POSITIONS???
 
-
-  }
-
+  
   // 9. Keep going! Move onto part 3!
 
   // --------------------------- PART 3 ------------------------------------
 
+// WHERE IS NUMBER 10?????
+
+
   // 11. BOOM. Attach a "click" handler that adds the "shot" class to
   //     the duck when you click on it!
+ 
 
+   elements = document.querySelectorAll(".duck");
+  // it is basically what i did in #3
+   for (let i = 0; i < elements.length; i++) { 
+     // OMG IT WORKED?!?! I mean of course it worked.
+      elements[i].addEventListener('click',boomBoom) // it does magic. jk. adds evenlistener for each item in the class duck
+        function boomBoom () { // when called it will add 'shot' class to each item in the 'duck' class
+          elements[i].classList.toggle('shot');  
+          deadDuck(elements[i])
+           setTimeout(chickenDinner,500)
+
+        }
+
+    }
+  
   // 12. After a duck has been clicked on, remove it from the DOM after
   //     a short delay (1 second) Hint Hint...use setTimeout
   //     as for removing the element check out https://dzone.com/articles/removing-element-plain
+  
+
+
+
 
   // 13. Create a new function named checkForWinner() that reads the DOM
   //     to see if there are any ducks left. (How can we check the DOM for more than one element?, and how can we see how many elements we get back) If not, alert "YOU WIN!"
+
 
   // 14. BONUS: The ducks are moving pretty erratically, can you think
   //     of a way to adjust the ducks speed based on how far needs to move?
