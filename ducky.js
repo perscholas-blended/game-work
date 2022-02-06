@@ -83,14 +83,14 @@ window.onload = function () {
       constructor(){
         this.xpos = width * .11;
         this.ypos = height * .50;
-        this.spritePositionX = 20;
+        this.spritePositionX = 0;
         this.spritePositionY = 0;
       }
       createDog(){
         this.dog = document.createElement('div');
         this.dog.className = 'dog';
         body.appendChild(this.dog);
-        // this.dog.style.backgroundPosition = `-${this.spritePositionX}px -${this.spritePositionY}px`;
+        this.dog.style.backgroundPosition = `-${this.spritePositionX}px -${this.spritePositionY}px`;
 
       }
       drawDog(){
@@ -100,12 +100,12 @@ window.onload = function () {
       }
       moveDog(){
         if(this.spritePositionX < 1175){
-          this.spritePositionX = this.spritePositionX + 174;
+          this.spritePositionX = this.spritePositionX + 195;
         }else{ this.spritePositionX === 0}
       }
       update(){
         this.drawDog();
-        // this.moveDog();
+        this.moveDog();
       }
     }
 
