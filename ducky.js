@@ -6,12 +6,13 @@ window.onload = function () {
   let duckPositionX = width/2;
   let duckPositionY = height * .65;
   //starting Angle when duck is generated
-  let angleMarkerX = randomPosition(50, width - 100);
+  let angleMarkerX = randomPosition(100, width - 100);
   let angleMarkerY = height;
   let score = document.getElementsByClassName('duck');
   const intro = new sound("audio/start-round.mp3");
   const bang = new sound('audio/bang.wav');
   const bang2 = new sound('audio/bang.wav');
+
 
 
     console.log(body);
@@ -51,10 +52,11 @@ window.onload = function () {
     setInterval(function(){
       for(let i = 0; i < ducks.length; i++){
         ducks[i].update();
+        dog.update();
         checkForWinner();
         scoreBoard.textContent = 'count: ' + score.length;
       }
-    }, 250);
+    }, 200);
 
     class Shot{
       constructor(xpos, ypos){
@@ -77,14 +79,44 @@ window.onload = function () {
            },200);
       }   
     }
+    class Dog {
+      constructor(){
+        this.xpos = width * .11;
+        this.ypos = height * .50;
+        this.spritePositionX = 20;
+        this.spritePositionY = 0;
+      }
+      createDog(){
+        this.dog = document.createElement('div');
+        this.dog.className = 'dog';
+        body.appendChild(this.dog);
+        // this.dog.style.backgroundPosition = `-${this.spritePositionX}px -${this.spritePositionY}px`;
+
+      }
+      drawDog(){
+        this.dog.style.backgroundPosition = `-${this.spritePositionX}px -${this.spritePositionY}px`;
+        this.dog.style.left = `${this.xpos}px`
+        this.dog.style.top = `${this.ypos}px`
+      }
+      moveDog(){
+        if(this.spritePositionX < 1175){
+          this.spritePositionX = this.spritePositionX + 174;
+        }else{ this.spritePositionX === 0}
+      }
+      update(){
+        this.drawDog();
+        // this.moveDog();
+      }
+    }
+
     class Duck{
       constructor(xpos, ypos, spritePositionX, spritePositionY){
         this.xpos = xpos;
         this.ypos = ypos;
         this.spritePositionX = spritePositionX;
         this.spritePositionY = spritePositionY;
-        this.speedx = [-125, 125, -50, 50, -75, 75, -100, 100];
-        this.speedy = [-45, -20, -75, -10, -90, -80, -100, -150];
+        this.speedx = [-185, 125, -50, 50, -75, 75, -100, 190];
+        this.speedy = [-115, -120, -175, -10, -90, -80, -100, -180];
         this.duckSpeedSelector = Math.floor(Math.random() * 8);
       }
       createElement(){
@@ -101,11 +133,11 @@ window.onload = function () {
           }
         });
       }
-      duckOutOfView(){
-        if(this.duck.style.left + this.xpos > width||this.duck.style.left + this.xpos - 200 < 0||this.duck.style.top + this.ypos + 200 < 0){
-          console.log('duck off screen')
-        }    
-      }
+      // duckOutOfView(){
+      //   if(this.duck.style.left + this.xpos > width||this.duck.style.left + this.xpos - 200 < 0||this.duck.style.top + this.ypos + 200 < 0){
+      //     console.log('duck off screen')
+      //   }    
+      // }
       duckMove(){
         //detects Angle of duck to determine Sprite.
         this.angle = Math.atan2(angleMarkerY - this.ypos, angleMarkerX - this.xpos);
@@ -129,20 +161,20 @@ window.onload = function () {
         this.duckDraw();
         this.duckMove();
         this.removeDuck();
-        this.duckOutOfView();
+        // this.duckOutOfView();
         }
     }
 
     //Wait 2 seconds to start game
     function startGame(){
-      intro.play();
+      // intro.play();
       setTimeout(function(){
       for(let i = 0; i < 3; i++){
         ducks.push(new Duck(randomPosition(60, width -60), duckPositionY, 100, 160));
         //Check for duplicate positions;
         ducks[i].createElement();
         }
-      }, 5000);
+      }, 200);
     }
 
     function checkForWinner(){
@@ -203,8 +235,10 @@ window.onload = function () {
       }    
   }
     startGame();
+    const dog = new Dog();
     const shot = new Shot();
-    shot.shoot()
+    dog.createDog();
+    shot.shoot();
 
   // ---------------------------- PART 2 ---------------------------------
 
