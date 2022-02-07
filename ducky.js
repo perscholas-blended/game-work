@@ -1,8 +1,57 @@
 window.onload = function () {
   const body = document.body;
 
-  console.log(body);
+  
+  
+  function createDuck(){
+    // creating the div element
+    let myDiv = document.createElement('div')
+    // creating class name for div element
+    myDiv.className = "duck";
+    // appending div to body using appendChild
+    document.body.appendChild(myDiv)
 
+    setInterval(flappy, 250);
+    setInterval(moveDuck,1000);
+    
+    function flappy(){
+      // setting duck to flap but this doesnt do it in a loop so you need the else statement to ensure they flap
+      if (myDiv.className === "duck"){
+        myDiv.className= "duck flap";
+      } 
+      else if (myDiv.className === "duck flap") {
+        myDiv.className= "duck";
+      }
+    }
+    
+    function moveDuck(){ // doesn't work if i feed myDiv
+      myDiv.style.top=  (Math.random() * window.innerHeight).toString()+"px";
+      myDiv.style.left = (Math.random() * window.innerWidth).toString() + 'px';
+    }
+  return myDiv
+  }
+  for (let i = 0; i < 5; i++){
+    let returnDiv = createDuck();
+    returnDiv.onclick = function() {myFunction(returnDiv)};
+  }
+
+  function myFunction(returnDiv) {
+    returnDiv.className = "duck shot"; 
+    setTimeout(anotherFunction, 1000);
+    
+    function anotherFunction(){
+      returnDiv.parentNode.removeChild(returnDiv);
+    }
+  }
+
+  setInterval(checkForWinner,2000)
+  function checkForWinner() {
+    console.log(document.getElementsByClassName("duck").length);
+    if (0 === document.getElementsByClassName("duck").length){
+      alert("YOU WIN, YOU WINNER WINNER NOW YOU GET A DUCK DINNER!!!!")
+    }
+  }
+}
   // 1. Create a <div> with the class "duck" and add it to the body.  Do this step by step
   // ( 1. create the element
   //   2. add a class to the element
@@ -56,4 +105,3 @@ window.onload = function () {
   //     direction the duck is flying and change the way the duck is facing
 
   // Done, you have accomplish another level of skill
-};
