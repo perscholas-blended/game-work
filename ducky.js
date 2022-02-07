@@ -87,7 +87,7 @@ window.onload = function () {
 
   // 11. BOOM. Attach a "click" handler that adds the "shot" class to
   //     the duck when you click on it!
-  
+
   let allDucks = document.querySelectorAll(".duck");
   allDucks.forEach((item) => {
     item.addEventListener("click", (event) => {
@@ -126,8 +126,34 @@ window.onload = function () {
   // 14. BONUS: The ducks are moving pretty erratically, can you think
   //     of a way to adjust the ducks speed based on how far needs to move?
 
+  let ducksSpeed = document.querySelectorAll("div");
+  function duckTransition(speed) {
+    speed.forEach((item) => {
+      item.style.transitionTimingFunction = "cubic-bezier(0.2, 0.1, 0.3, 0.1)"; //slows the speed of the ducks
+    });
+  }
+  duckTransition(ducksSpeed);
+
   // 15. BONUS: Add the "left" and "right" class to the duck based on the
   //     direction the duck is flying and change the way the duck is facing
 
+  let ducks = document.querySelectorAll("div");
+  for (let i = 0; i < ducks.length; i++) {
+    let a = ducks[Math.floor(Math.random() * ducks.length)];
+    a.classList.toggle("right");
+  }
+  function direction(d) {
+    d.forEach((k) => {
+      if (k.className.includes("left")) {
+        k.classList.toggle("right");
+      } else {
+        k.classList.toggle("left");
+      }
+    });
+  }
+  setInterval(function () {
+    direction(ducks);
+  }, 4000);
+
   // Done, you have accomplish another level of skill
-};
+}; 
