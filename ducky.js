@@ -11,11 +11,7 @@ window.onload = function () {
   let score = document.getElementsByClassName('duck');
   const intro = new sound("audio/start-round.mp3");
   const bang = new sound('audio/bang.wav');
-  const bang2 = new sound('audio/bang.wav');
-
-
-
-    console.log(body);
+  const quack = new sound('audio/quack.wav');
 
   // 1. Create a <div> with the class "duck" and add it to the body.  Do this step by step
   // ( 1. create the element
@@ -47,17 +43,33 @@ window.onload = function () {
     }
     //Ducks House
     const ducks = [];  
-  
     //Update game loop
     setInterval(function(){
       for(let i = 0; i < ducks.length; i++){
         ducks[i].update();
-        dog.update();
         checkForWinner();
         scoreBoard.textContent = 'count: ' + score.length;
       }
-    }, 200);
+    }, 250);
 
+    //Dog function
+    function dog(){
+      let position = 3;  
+      const dog = document.createElement('div');
+      dog.className = 'dog';
+      body.appendChild(dog);
+      setInterval(() => {
+        dog.style.backgroundPosition = `-${position}px -${0}px`;
+        if(position < 640){
+          position = position + 182;
+          dog.style.left += `${10}px`
+        }
+      }, 200);
+      quack.play('audio/quack.wav');
+      dog.style.left = `${width * .20}px`;
+      dog.style.top = `${height * .75}px`;
+      }
+    // Gun shot 
     class Shot{
       constructor(xpos, ypos){
         this.xpos = xpos;
@@ -79,36 +91,7 @@ window.onload = function () {
            },200);
       }   
     }
-    class Dog {
-      constructor(){
-        this.xpos = width * .11;
-        this.ypos = height * .50;
-        this.spritePositionX = 0;
-        this.spritePositionY = 0;
-      }
-      createDog(){
-        this.dog = document.createElement('div');
-        this.dog.className = 'dog';
-        body.appendChild(this.dog);
-        this.dog.style.backgroundPosition = `-${this.spritePositionX}px -${this.spritePositionY}px`;
-
-      }
-      drawDog(){
-        this.dog.style.backgroundPosition = `-${this.spritePositionX}px -${this.spritePositionY}px`;
-        this.dog.style.left = `${this.xpos}px`
-        this.dog.style.top = `${this.ypos}px`
-      }
-      moveDog(){
-        if(this.spritePositionX < 1175){
-          this.spritePositionX = this.spritePositionX + 195;
-        }else{ this.spritePositionX === 0}
-      }
-      update(){
-        this.drawDog();
-        this.moveDog();
-      }
-    }
-
+    //Ducks
     class Duck{
       constructor(xpos, ypos, spritePositionX, spritePositionY){
         this.xpos = xpos;
@@ -119,7 +102,7 @@ window.onload = function () {
         this.speedy = [-115, -120, -175, -10, -90, -80, -100, -180];
         this.duckSpeedSelector = Math.floor(Math.random() * 8);
       }
-      createElement(){
+      createDuck(){
         this.duck = document.createElement('div');
         this.duck.className = 'duck';
         body.appendChild(this.duck);
@@ -127,17 +110,15 @@ window.onload = function () {
       removeDuck(){
             document.addEventListener('click', function(e){
           if(e.target.className === 'duck'){
+            quack.play('audio/quack.wav');
+
             setTimeout(function(){
               body.removeChild(e.target);
             }, 100);
           }
         });
       }
-      // duckOutOfView(){
-      //   if(this.duck.style.left + this.xpos > width||this.duck.style.left + this.xpos - 200 < 0||this.duck.style.top + this.ypos + 200 < 0){
-      //     console.log('duck off screen')
-      //   }    
-      // }
+
       duckMove(){
         //detects Angle of duck to determine Sprite.
         this.angle = Math.atan2(angleMarkerY - this.ypos, angleMarkerX - this.xpos);
@@ -147,8 +128,8 @@ window.onload = function () {
         if(this.angle > 1.56 && this.angle <= 2.34){ if(this.spritePositionX === 200){ this.spritePositionX = 300;} else{ this.spritePositionX = 200;}} 
         if(this.angle > 2.34 && this.angle <= 3.14){ if(this.spritePositionX === 680){ this.spritePositionX = 830;} else{ this.spritePositionX = 680}}    
         //Add to position with each frame 
-              this.xpos += this.speedx[this.duckSpeedSelector];
-              this.ypos += this.speedy[this.duckSpeedSelector]; 
+        this.xpos += this.speedx[this.duckSpeedSelector];
+        this.ypos += this.speedy[this.duckSpeedSelector]; 
           }
       duckDraw(){
         //Location on spritesheet
@@ -165,18 +146,18 @@ window.onload = function () {
         }
     }
 
-    //Wait 2 seconds to start game
+    //Wait 2 seconds to start game/ play music// PUT HOW MANY DUCKS ARE PRODUCED
     function startGame(){
       // intro.play();
-      setTimeout(function(){
+    setTimeout(function(){
       for(let i = 0; i < 3; i++){
         ducks.push(new Duck(randomPosition(60, width -60), duckPositionY, 100, 160));
-        //Check for duplicate positions;
-        ducks[i].createElement();
+        ducks[i].createDuck();
         }
-      }, 200);
-    }
+       }, 1050);
+      }
 
+    //Check for a winner then print YOU WIN!!
     function checkForWinner(){
       if(score.length <= 0){
         console.log(score.length)
@@ -185,8 +166,6 @@ window.onload = function () {
         winner.style.className = 'winner';
         winner.style.width = `${width/2}px`;
         winner.style.height = `${height/2}px`;
-        // winner.style.border = '3px solid';
-        // winner.style.backgroundColor = 'green';
         winner.style.textAlign = 'center';
         winner.style.margin = '0px';
         winner.style.borderRadius ='5px';
@@ -195,11 +174,6 @@ window.onload = function () {
         winner.style.left = `${width * .28}px`
         winner.style.top = `${height * .40}px`
         winner.textContent = 'YOU WIN!!';
-      
-        const clearDucks = document.querySelectorAll('duck');
-        clearDucks.forEach(function(clearDucks){
-          clearDucks.remove();
-        })
         return true;
       }
     }
@@ -217,7 +191,7 @@ window.onload = function () {
     scoreBoard.style.fontSize = '30px'
     scoreBoard.style.position = 'absolute';
     scoreBoard.style.left = `${width - 170}px`
-    scoreBoard.style.top = `${height * .01}px`
+    scoreBoard.style.top = `${height * .01}px`   
 
     //Sound Constructor
     function sound(src) {
@@ -234,11 +208,12 @@ window.onload = function () {
           this.sound.pause();
       }    
   }
+  //Call functions
     startGame();
-    const dog = new Dog();
     const shot = new Shot();
-    dog.createDog();
     shot.shoot();
+    dog();
+
 
   // ---------------------------- PART 2 ---------------------------------
 

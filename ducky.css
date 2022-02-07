@@ -49,12 +49,12 @@ html {
 }
 .dog {
   position: absolute;
-  background-position: -20px -0px;
-  width: 173px;
+  background-position: -0px -0px;
+  width: 200px;
   height: 160px;
   background-image: url(images/duckhunt.png);
-  transition: top 2s, left 2s;
+  /* transition: top 2s, left 2s;
   transition-timing-function: linear;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
  
 }
