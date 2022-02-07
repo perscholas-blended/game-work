@@ -50,25 +50,30 @@ window.onload = function () {
         checkForWinner();
         scoreBoard.textContent = 'count: ' + score.length;
       }
-    }, 250);
+    }, 160);
 
     //Dog function
     function dog(){
+      let xpos = width * .20;
+      let walk = 100;
       let position = 3;  
       const dog = document.createElement('div');
       dog.className = 'dog';
       body.appendChild(dog);
+      //Animate Dog
       setInterval(() => {
         dog.style.backgroundPosition = `-${position}px -${0}px`;
         if(position < 640){
           position = position + 182;
-          dog.style.left += `${10}px`
         }
       }, 200);
+
+      //Ducks Quack when startled by dog
       quack.play('audio/quack.wav');
-      dog.style.left = `${width * .20}px`;
+      dog.style.left = `${xpos}px`;
       dog.style.top = `${height * .75}px`;
       }
+
     // Gun shot 
     class Shot{
       constructor(xpos, ypos){
@@ -98,8 +103,8 @@ window.onload = function () {
         this.ypos = ypos;
         this.spritePositionX = spritePositionX;
         this.spritePositionY = spritePositionY;
-        this.speedx = [-185, 125, -50, 50, -75, 75, -100, 190];
-        this.speedy = [-115, -120, -175, -10, -90, -80, -100, -180];
+        this.speedx = [-15, 45, -50, 5, -35, 75, -30, 9];
+        this.speedy = [-50, -20, -75, -10, -90, -80, -40, -60];
         this.duckSpeedSelector = Math.floor(Math.random() * 8);
       }
       createDuck(){
@@ -150,7 +155,7 @@ window.onload = function () {
     function startGame(){
       // intro.play();
     setTimeout(function(){
-      for(let i = 0; i < 3; i++){
+      for(let i = 0; i < 5; i++){
         ducks.push(new Duck(randomPosition(60, width -60), duckPositionY, 100, 160));
         ducks[i].createDuck();
         }
@@ -251,4 +256,3 @@ window.onload = function () {
 
   // Done, you have accomplish another level of skill
 };
-//
