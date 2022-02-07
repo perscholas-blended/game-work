@@ -8,8 +8,15 @@ window.onload = function () {
   //   2. add a class to the element
   //   3. append the element to the body )
 
+  let duck_div = document.createElement("div");
+  duck_div.className = "duck";
+  body.appendChild(duck_div);
+
   // 2. Next, use setInterval to toggle the "flap" class on the duck every 250 ms (1/4 second)
   // https://www.w3schools.com/jsref/met_win_setinterval.asp
+  setInterval(function () {
+    duck_div.classList.toggle("flap");
+  }, 250);
 
   // 3. Now, let's move the duck using CSS "top" and "left". Create
   // a function `moveDuck` that takes a duck object as an argument and sets the
@@ -17,7 +24,18 @@ window.onload = function () {
   // HINT: Use Math.random() * window.innerWidth    for "left"
   //       And Math.random() * window.innerHeight   for "top"
 
+  function moveDuck(x) {
+    let tp = randomPosition();
+    x.style.left = tp[0] + "px";
+    x.style.top = tp[1] + "px";
+    duckTransition(x);
+  }
+
   // 4. Try making the duck move to a different location every second (what did we use to do this several lines up??)
+
+  setInterval(function () {
+    moveDuck(duck_div);
+  }, 1000);
 
   // 5. Congratulations! Move on to part 2!
 
@@ -27,13 +45,41 @@ window.onload = function () {
   //    a "function" called createDuck() that does everything in 1-4
   //    and "returns" the duck object
 
+  function createDuck() {
+    let duck_div = document.createElement("div");
+    setInterval(function () {
+      moveDuck(duck_div);
+    }, 1000);
+    duck_div.className = "duck";
+    body.appendChild(duck_div);
+    setInterval(function () {
+      duck_div.classList.toggle("flap");
+    }, 500);
+    return duck_div;
+  }
+
   // 7. Now, let's create lots of ducks!  Use a "for" loop to create 5 ducks
   //    using our fancy new createDuck() function
+
+  for (let i = 0; i < 5; i++) {
+    let c = new createDuck();
+    // console.log("new ducky obj created");
+  }
 
   // 8. The ducks are overlapping.  Modify createDuck so each time
   //     it creates a duck, it appears in a random location
   // HINT: You may want to create a `randomPosition()` function that you can use
   //       to set the ducks' initial locations and in your `moveDuck()` function;
+
+  function randomPosition() {
+    let duckWidth = 110;
+    let duckHeight = 115;
+    // let x = Math.random() * (window.innerWidth - 120);
+    // let y = Math.random() * (window.innerHeight- 120);
+    let x = Math.random() * (window.innerWidth - 120) + duckHeight;
+    let y = Math.random() * (window.innerHeight - 120) + duckWidth;
+    return [x, y];
+  }
 
   // 9. Keep going! Move onto part 3!
 
@@ -41,13 +87,41 @@ window.onload = function () {
 
   // 11. BOOM. Attach a "click" handler that adds the "shot" class to
   //     the duck when you click on it!
+  
+  let allDucks = document.querySelectorAll(".duck");
+  allDucks.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      item.classList.toggle("shot"); //adding shot to class of each div element when duck clicked
+      removeDuck(item); //method removes the div element
+      setTimeout(checkForWinner, 1000); //checks if div-obj are present in the window, if no - alert - you won
+    });
+  });
 
   // 12. After a duck has been clicked on, remove it from the DOM after
   //     a short delay (1 second) Hint Hint...use setTimeout
   //     as for removing the element check out https://dzone.com/articles/removing-element-plain
 
+  function removeDuck(i) {
+    let text = i.className;
+    const removeElement = () => {
+      i.parentNode.removeChild(i);
+    };
+    if (text.includes("shot")) {
+      setTimeout(removeElement, 1000);
+    }
+  }
   // 13. Create a new function named checkForWinner() that reads the DOM
   //     to see if there are any ducks left. (How can we check the DOM for more than one element?, and how can we see how many elements we get back) If not, alert "YOU WIN!"
+
+  function checkForWinner() {
+    let duck_Cnt = document.querySelectorAll("div");
+    if (duck_Cnt.length === 0) {
+      //checks if there are zero div elements in the window
+      //  console.log("YOU WON");
+      //  setTimeout(alert("YOU WON"),2000);
+      window.alert(" YOU WON!! "); // alerts you won
+    }
+  }
 
   // 14. BONUS: The ducks are moving pretty erratically, can you think
   //     of a way to adjust the ducks speed based on how far needs to move?
